@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import image from '../../public/graph.webp'
 
 export default function StatsSection() {
   return (
@@ -26,7 +27,7 @@ export default function StatsSection() {
       {/* Imagem (mapa ou gráfico) */}
       <div className="w-full md:w-1/2 mt-8 md:mt-0 relative">
         <Image
-          src="/images/paludismo-map.png" // Ajuste para o caminho real da sua imagem
+          src={image} // Ajuste para o caminho real da sua imagem
           alt="Mapa de casos de paludismo"
           width={600}
           height={400}
