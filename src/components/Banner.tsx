@@ -14,7 +14,9 @@ export default function Banner() {
           className="object-cover"
           priority
         />
-      </div>
+      </div>  // Armazenar tokens no localStorage
+            localStorage.setItem('access_token', data.access);
+            localStorage.setItem('refresh_token', data.refresh);
       {/* Overlay para melhorar a legibilidade do texto */}
       <div className="absolute inset-0 bg-black opacity-50"></div>
 

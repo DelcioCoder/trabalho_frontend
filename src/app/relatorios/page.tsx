@@ -1,6 +1,25 @@
 "use client";
+import { useState, useEffect } from "react";
 
 export default function RelatoriosPage() {
+  const [localidades, setLocalidades] = useState([]);
+
+  useEffect(() => {
+    async function fetchLocalidades() {
+      try {
+        const res = await fetch("http://localhost:8000/api/localidades/");
+        if (!res.ok) throw new Error("Falha ao carregar localidades");
+        const json = await res.json();
+        setLocalidades(json);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    fetchLocalidades();
+  }, []);
+
+
+
   const handleSubmit = async (event: any) => {
     event.preventDefault(); // Evita o recarregamento da página
 
@@ -11,7 +30,7 @@ export default function RelatoriosPage() {
       idade: formData.get("idade"),
       sexo: formData.get("sexo"),
       telefone: formData.get("telefone"),
-      bairro: formData.get("bairro"),
+      localidade: Number(formData.get("localidade")),
     };
 
     // Exibe no console os dados coletados para verificação
@@ -110,20 +129,23 @@ export default function RelatoriosPage() {
             />
           </div>
 
-          <div className="mb-4">
-            <label htmlFor="bairro" className="block text-gray-600 font-medium mb-2">
-              Bairro:
-            </label>
-            <input
-              type="text"
-              id="bairro"
-              name="bairro"
-              required
-              className="w-full border border-gray-300 p-2 rounded-md"
-            />
-          </div>
+  
+          <select
+            id="localidade"
+            name="localidade"
+            required
+            className="w-full border border-gray-300 p-2 rounded-md"
+          >
+            <option value="">Selecione uma localidade</option>
+            {localidades.map((loc) => (
+              <option key={loc.id} value={loc.id}>
+                {loc.nome}
+              </option>
+            ))}
+          </select>
 
-          <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">
+
+          <button type="submit" className="bg-green-600 mt-4 text-white px-4 py-2 rounded-md hover:bg-green-700">
             Enviar Relatório
           </button>
         </form>

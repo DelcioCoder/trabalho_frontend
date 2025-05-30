@@ -1,11 +1,40 @@
 "use client"
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
+
+  function logoutButton() {
+    const router = useRouter();
+
+    const handleLogout = async () => {
+      try {
+        const response = await fetch('/api/auth/logout')
+
+        if (!response.ok) {
+          throw new Error('Erro ao fazer logout');
+        }
+
+        // Redirecionar para a página de login
+        router.push('/auth/login');
+      } catch (error) {
+        console.error('Erro ao fazer logout:', error);
+      }
+    }
+
+    return (
+      <button
+        onClick={handleLogout}
+        className="rounded-md px-3 py-2 text-sm font-medium hover:bg-green-600"
+      >
+        Sair
+      </button>
+    );
+  }
 
   return (
     <nav className="bg-green-500 text-white">
@@ -59,6 +88,9 @@ export default function Navbar() {
             <Link href="/" className="rounded-md px-3 py-2 text-sm font-medium hover:bg-green-600">
               Home
             </Link>
+            <Link href="/dashboard" className="rounded-md px-3 py-2 text-sm font-medium hover:bg-green-600">
+              Dashboard
+            </Link>
             <Link href="/sobre" className="rounded-md px-3 py-2 text-sm font-medium hover:bg-green-600">
               Sobre o Projeto
             </Link>
@@ -71,6 +103,7 @@ export default function Navbar() {
             <Link href="/contato" className="rounded-md px-3 py-2 text-sm font-medium hover:bg-green-600">
               Contato
             </Link>
+            {logoutButton()}
           </div>
         </div>
       </div>
@@ -81,6 +114,9 @@ export default function Navbar() {
           <div className="space-y-1 px-2 pt-2 pb-3">
             <Link href="/" className="block rounded-md px-3 py-2 text-base font-medium hover:bg-green-600">
               Home
+            </Link>
+            <Link href="/dashboard" className="block rounded-md px-3 py-2 text-base font-medium hover:bg-green-600">
+              Dashboard
             </Link>
             <Link href="/sobre" className="block rounded-md px-3 py-2 text-base font-medium hover:bg-green-600">
               Sobre o Projeto
@@ -94,6 +130,7 @@ export default function Navbar() {
             <Link href="/contato" className="block rounded-md px-3 py-2 text-base font-medium hover:bg-green-600">
               Contato
             </Link>
+            {logoutButton()}
           </div>
         </div>
       )}
